@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateAble.Api", "WebApplication1\DebateAble.Api.csproj", "{C3E8D772-9F74-41E2-A701-9807BB5E9E89}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DebateAble.Database", "DebateAble.Database\DebateAble.Database.sqlproj", "{6DB0A02E-53D5-4F68-B3F0-1683C7528CFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateAble.Models", "DebateAble.Models\DebateAble.Models.csproj", "{BBDF492F-8E8D-46F7-A047-748E474F8A75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebateAble.Models", "DebateAble.Models\DebateAble.Models.csproj", "{BBDF492F-8E8D-46F7-A047-748E474F8A75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateAble.Common", "DebateAble.Common\DebateAble.Common.csproj", "{79C4E57B-ECCF-458D-8088-97001A8813C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebateAble.Common", "DebateAble.Common\DebateAble.Common.csproj", "{79C4E57B-ECCF-458D-8088-97001A8813C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebateAble.Api", "DebateAble.Api\DebateAble.Api.csproj", "{7070DE73-803E-4BE9-BB2A-162B298A2975}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C3E8D772-9F74-41E2-A701-9807BB5E9E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3E8D772-9F74-41E2-A701-9807BB5E9E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3E8D772-9F74-41E2-A701-9807BB5E9E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3E8D772-9F74-41E2-A701-9807BB5E9E89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DB0A02E-53D5-4F68-B3F0-1683C7528CFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DB0A02E-53D5-4F68-B3F0-1683C7528CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DB0A02E-53D5-4F68-B3F0-1683C7528CFF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -35,6 +31,10 @@ Global
 		{79C4E57B-ECCF-458D-8088-97001A8813C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79C4E57B-ECCF-458D-8088-97001A8813C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79C4E57B-ECCF-458D-8088-97001A8813C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7070DE73-803E-4BE9-BB2A-162B298A2975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7070DE73-803E-4BE9-BB2A-162B298A2975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7070DE73-803E-4BE9-BB2A-162B298A2975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7070DE73-803E-4BE9-BB2A-162B298A2975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
