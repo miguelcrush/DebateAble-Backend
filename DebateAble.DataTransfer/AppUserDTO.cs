@@ -1,7 +1,8 @@
-﻿namespace DebateAble.Models
+﻿namespace DebateAble.DataTransfer
 {
-	public class AppUser : BaseTrackableModel
+	public class AppUserDTO
 	{
+		public Guid Id { get; set; }
 		public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

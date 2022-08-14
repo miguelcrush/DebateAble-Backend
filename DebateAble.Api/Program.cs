@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(options =>
 	options.Authority = authorityEndpoint;
 	options.Audience = builder.Configuration["Okta:Audience"];
 	options.RequireHttpsMetadata = true;
+
 });
 
 
