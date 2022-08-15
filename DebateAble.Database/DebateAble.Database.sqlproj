@@ -67,6 +67,7 @@
     <Build Include="dbo\Tables\ParticipantType.sql" />
     <Build Include="dbo\Tables\DebatePost.sql" />
     <Build Include="dbo\Tables\DebateComment.sql" />
+    <Build Include="dbo\Tables\ResponseRequest.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />

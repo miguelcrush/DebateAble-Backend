@@ -13,5 +13,8 @@ namespace DebateAble.Models
 		public Guid CreatedByAppUserId { get; set; }
 
 		public virtual AppUser? CreatedBy { get; set; }
+
+		public virtual ICollection<ResponseRequest> ResponseRequests { get; set; }
+		public virtual ICollection<DebateParticipant> Participants { get; set; }
 	}
 }

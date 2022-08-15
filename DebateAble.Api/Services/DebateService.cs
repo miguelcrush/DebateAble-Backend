@@ -8,8 +8,8 @@ namespace DebateAble.Api.Services
 {
     public interface IDebateService
     {
-        Task<TypedResult<List<DebateDTO>>> GetList();
-        Task<TypedResult<DebateDTO>> PostDebate(DebateDTO dto);
+        Task<TypedResult<List<GetDebateDTO>>> GetList();
+        Task<TypedResult<GetDebateDTO>> PostDebate(PostDebateDTO dto);
     }
 
     public class DebateService : IDebateService
@@ -29,24 +29,24 @@ namespace DebateAble.Api.Services
             _currentUserService = currentUserService;
         }
 
-        public async Task<TypedResult<List<DebateDTO>>> GetList()
+        public async Task<TypedResult<List<GetDebateDTO>>> GetList()
         {
             var results = await _dbContext.Debates
                 .ToListAsync();
 
-            return new TypedResult<List<DebateDTO>>(results.Select(r => _mapper.Map<DebateDTO>(r)).ToList());
+            return new TypedResult<List<GetDebateDTO>>(results.Select(r => _mapper.Map<GetDebateDTO>(r)).ToList());
         }
 
-        public async Task<TypedResult<DebateDTO>> PostDebate(DebateDTO dto)
+        public async Task<TypedResult<GetDebateDTO>> PostDebate(PostDebateDTO dto)
         {
             if(dto == null)
             {
-                return new TypedResult<DebateDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(dto)} required");
+                return new TypedResult<GetDebateDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(dto)} required");
             }
 
             if(string.IsNullOrEmpty(dto.Title))
             {
-                return new TypedResult<DebateDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(dto.Title)} required");
+                return new TypedResult<GetDebateDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(dto.Title)} required");
             }
 
             var debate = new Debate()
@@ -59,7 +59,14 @@ namespace DebateAble.Api.Services
             _dbContext.Debates.Add(debate);
             await _dbContext.SaveChangesAsync();
 
-            return new TypedResult<DebateDTO>(_mapper.Map<DebateDTO>(debate));
+            if(dto.ResponseRequest!=null)
+            {
+                var responseRequest = _mapper.Map<ResponseRequest>(dto.ResponseRequest);
+                _dbContext.ResponseRequests.Add(responseRequest);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return new TypedResult<GetDebateDTO>(_mapper.Map<GetDebateDTO>(debate));
         }
     }
 }

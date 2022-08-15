@@ -6,14 +6,23 @@ using System.Threading.Tasks;
 
 namespace DebateAble.DataTransfer
 {
-    public class DebateDTO
+    public class PostDebateDTO
     {
-        public Guid Id { get; set; }
         public string Title { get; set; } = default!;
         public string? Description { get; set; }
-        
-        public string? StartedByEmailAddress { get; set; }
-        public string? StartedByFirstName { get; set; }
-        public string? StartedByLastName { get; set; }
+
+        public PostResponseRequestDTO ResponseRequest { get; set; }
+    }
+
+    public class GetDebateDTO
+    {
+        public string Title { get; set; } = default!;
+        public string? Description { get; set; }
+
+        public string StartedByEmailAddress { get; set; }
+        public string StartedByFirstName { get; set; }
+        public string StartedByLastName { get; set; }
+
+        public List<GetResponseRequestDTO> ResponseRequests { get; set; }
     }
 }

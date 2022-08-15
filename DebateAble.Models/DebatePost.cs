@@ -10,5 +10,7 @@ namespace DebateAble.Models
 	{
 		public Guid AppUserId { get; set; }
 		public string Post { get; set; }
+
+		public virtual AppUser AppUser { get; set; }
 	}
 }

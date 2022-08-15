@@ -26,7 +26,7 @@ namespace DebateAble.Api.Controllers
         }
 
 		[HttpPost()]
-		public async Task<IActionResult> Post(DebateDTO debate)
+		public async Task<IActionResult> Post(PostDebateDTO debate)
         {
 			var result = await _debateService.PostDebate(debate);
 			return base.HandleTypedResult(result);

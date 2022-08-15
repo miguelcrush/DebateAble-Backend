@@ -21,6 +21,7 @@ namespace DebateAble.Models
 		public virtual DbSet<DebateParticipant> DebateParticipants { get; set; }
 		public virtual DbSet<DebatePost> DebatePosts { get; set; }
 		public virtual DbSet<ParticipantType> ParticipantTypes { get; set; }
+		public virtual DbSet<ResponseRequest> ResponseRequests { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -45,7 +46,7 @@ namespace DebateAble.Models
 
 				e.HasOne(e => e.CreatedBy)
 					.WithMany(au => au.StartedDebates)
-					.HasForeignKey(e => e.CreatedByAppUserId);
+					.HasForeignKey(e => e.CreatedByAppUserId); 
 			});
 
 			modelBuilder.Entity<DebateComment>(e =>
@@ -56,6 +57,10 @@ namespace DebateAble.Models
 				e.Property(e => e.Id)
 					.HasColumnType("uniqueidentifier")
 					.HasDefaultValueSql("newsequentialid()");
+
+				e.HasOne(e => e.AppUser)
+					.WithMany(au => au.DebateComments)
+					.HasForeignKey(e => e.AppUserId);
 			});
 
 			modelBuilder.Entity<DebateParticipant>(e =>
@@ -66,6 +71,14 @@ namespace DebateAble.Models
 				e.Property(e => e.Id)
 					.HasColumnType("uniqueidentifier")
 					.HasDefaultValueSql("newsequentialid()");
+
+				e.HasOne(e => e.AppUser)
+					.WithMany(au => au.ParticipantOf)
+					.HasForeignKey(e => e.AppUserId);
+
+				e.HasOne(e => e.Debate)
+					.WithMany(d => d.Participants)
+					.HasForeignKey(e => e.DebateId);
 			});
 
 			modelBuilder.Entity<DebatePost>(e =>
@@ -76,11 +89,23 @@ namespace DebateAble.Models
 				e.Property(e => e.Id)
 					.HasColumnType("uniqueidentifier")
 					.HasDefaultValueSql("newsequentialid()");
+
+				e.HasOne(e => e.AppUser)
+					.WithMany(e => e.DebatePosts)
+					.HasForeignKey(e => e.AppUserId);
 			});
 
 			modelBuilder.Entity<ParticipantType>(e =>
 			{
 				e.ToTable("ParticipantType");
+			});
+
+			modelBuilder.Entity<ResponseRequest>(e =>
+			{
+				e.ToTable("ResponseRequest");
+				e.HasKey(e => e.Id);
+
+
 			});
 		}
 	}
