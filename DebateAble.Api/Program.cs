@@ -1,5 +1,6 @@
 
 
+using DebateAble.Api;
 using DebateAble.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Okta.AspNetCore;
+using DebateAble.Api.Middleware;
+using DebateAble.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +51,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
+/* CUSTOM SERVICES */
+
+builder.Services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IAppUserService, AppUserService>();
+builder.Services.AddScoped<IDebateService, DebateService>();
+
+/* END CUSTOM SERVICES */
 
 var app = builder.Build();
 
@@ -69,5 +81,7 @@ if (builder.Environment.IsDevelopment())
 {
 	Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
 }
+
+app.UseAppUserCapture();
 
 app.Run();

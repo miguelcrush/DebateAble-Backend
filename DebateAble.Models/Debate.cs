@@ -8,10 +8,10 @@ namespace DebateAble.Models
 {
 	public class Debate : BaseTrackableModel
 	{
-		public string Title { get; set; }
-		public string Description { get; set; }
-		public Guid AppUserId { get; set; }
+		public string Title { get; set; } = default!;
+		public string? Description { get; set; }
+		public Guid CreatedByAppUserId { get; set; }
 
-		
+		public virtual AppUser? CreatedBy { get; set; }
 	}
 }

@@ -75,4 +75,7 @@
     <None Include="Scripts\ParticipantType.sql" />
     <None Include="DebateAble.Database.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="DebateAble.Database.refactorlog" />
+  </ItemGroup>
 </Project>

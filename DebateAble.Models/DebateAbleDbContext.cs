@@ -42,6 +42,10 @@ namespace DebateAble.Models
 				e.Property(e => e.Id)
 					.HasColumnType("uniqueidentifier")
 					.HasDefaultValueSql("newsequentialid()");
+
+				e.HasOne(e => e.CreatedBy)
+					.WithMany(au => au.StartedDebates)
+					.HasForeignKey(e => e.CreatedByAppUserId);
 			});
 
 			modelBuilder.Entity<DebateComment>(e =>
