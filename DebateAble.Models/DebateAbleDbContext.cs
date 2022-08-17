@@ -61,6 +61,10 @@ namespace DebateAble.Models
 				e.HasOne(e => e.AppUser)
 					.WithMany(au => au.DebateComments)
 					.HasForeignKey(e => e.AppUserId);
+
+				e.HasOne(e => e.Debate)
+					.WithMany(d => d.Comments)
+					.HasForeignKey(e => e.DebateId);
 			});
 
 			modelBuilder.Entity<DebateParticipant>(e =>
@@ -93,6 +97,10 @@ namespace DebateAble.Models
 				e.HasOne(e => e.AppUser)
 					.WithMany(e => e.DebatePosts)
 					.HasForeignKey(e => e.AppUserId);
+
+				e.HasOne(e => e.Debate)
+					.WithMany(d => d.Posts)
+					.HasForeignKey(e => e.DebateId);
 			});
 
 			modelBuilder.Entity<ParticipantType>(e =>

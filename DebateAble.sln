@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebateAble.Common", "Debate
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebateAble.Api", "DebateAble.Api\DebateAble.Api.csproj", "{7070DE73-803E-4BE9-BB2A-162B298A2975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateAble.DataTransfer", "DebateAble.DataTransfer\DebateAble.DataTransfer.csproj", "{296DE2E9-C008-43A0-A457-2F8589E0BA08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebateAble.DataTransfer", "DebateAble.DataTransfer\DebateAble.DataTransfer.csproj", "{296DE2E9-C008-43A0-A457-2F8589E0BA08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebateAble.Tests", "DebateAble.Tests\DebateAble.Tests.csproj", "{8FF2CE24-12A5-45C8-AFD0-2D21FDBE62D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{296DE2E9-C008-43A0-A457-2F8589E0BA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{296DE2E9-C008-43A0-A457-2F8589E0BA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{296DE2E9-C008-43A0-A457-2F8589E0BA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF2CE24-12A5-45C8-AFD0-2D21FDBE62D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF2CE24-12A5-45C8-AFD0-2D21FDBE62D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF2CE24-12A5-45C8-AFD0-2D21FDBE62D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF2CE24-12A5-45C8-AFD0-2D21FDBE62D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,9 @@ namespace DebateAble.Models
 		public Guid AppUserId { get; set; }
 		public string Comment { get; set; }
 
+		public Guid DebateId { get; set; }
+
 		public virtual AppUser AppUser { get; set; }
+		public virtual Debate Debate { get; set; }
 	}
 }

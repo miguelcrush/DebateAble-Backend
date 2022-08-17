@@ -59,6 +59,7 @@ builder.Services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly()
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IDebateService, DebateService>();
+builder.Services.AddScoped<ISluggerService, SluggerService>();
 
 /* END CUSTOM SERVICES */
 
