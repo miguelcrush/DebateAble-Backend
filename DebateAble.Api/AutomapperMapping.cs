@@ -13,6 +13,7 @@ namespace DebateAble.Api
                 .ForMember(dest => dest.StartedByEmailAddress, opt => opt.MapFrom(src => src.CreatedBy.Email))
                 .ReverseMap();
             CreateMap<Debate, PostDebateDTO>().ReverseMap();
+            CreateMap<ParticipantType, ParticipantTypeDTO>().ReverseMap();
         }
     }
 }

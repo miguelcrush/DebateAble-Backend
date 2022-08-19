@@ -1,10 +1,13 @@
-﻿using System.Security.Claims;
+﻿using DebateAble.Common;
+using DebateAble.DataTransfer;
+using System.Security.Claims;
 
 namespace DebateAble.Api.Services
 {
     public interface ICurrentUserService
     {
         Task<Guid> GetCurrentUserId();
+        Task<TypedResult<AppUserDTO>> GetCurrentUser();
     }
     public class CurrentUserService : ICurrentUserService
     {
@@ -50,6 +53,12 @@ namespace DebateAble.Api.Services
             }
 
             return getDbUser.Payload.Id;
+        }
+
+        public async Task<TypedResult<AppUserDTO>> GetCurrentUser()
+        {
+            var currentUserId = await GetCurrentUserId();
+            return await _appUserService.GetUserById(currentUserId);
         }
     }
 }

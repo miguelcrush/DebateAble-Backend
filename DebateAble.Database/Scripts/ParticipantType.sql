@@ -3,7 +3,7 @@ USING (
 	SELECT
 		1 ID,
 		'Debater' Name,
-		1 CanDebate,
+		1 CanPost,
 		1 CanComment,
 		1 CanView
 
@@ -25,6 +25,6 @@ USING (
 ) incoming ON
 	incoming.ID = existing.ID
 WHEN NOT MATCHED THEN 
-	INSERT (Id, Name, CanDebate,CanComment,CanView)
-	VALUES(incoming.ID, incoming.NAme, incoming.CanDebate, incoming.CanComment, incoming.CanView)
+	INSERT (Id, Name, CanPost,CanComment,CanView)
+	VALUES(incoming.ID, incoming.NAme, incoming.CanPost, incoming.CanComment, incoming.CanView)
 ;

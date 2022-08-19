@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DebateAble.Common\DebateAble.Common.csproj" />
+  </ItemGroup>
+
 </Project>

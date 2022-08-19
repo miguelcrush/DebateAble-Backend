@@ -10,7 +10,7 @@ namespace DebateAble.Api.Services
 	{
 		Task<TypedResult<AppUserDTO>> GetUserByEmail(string email);
         Task<TypedResult<AppUserDTO>> AddOrUpdateUser(AppUserDTO user);
-
+        Task<TypedResult<AppUserDTO>> GetUserById(Guid id);
     }
 
     public class AppUserService : IAppUserService
@@ -24,7 +24,7 @@ namespace DebateAble.Api.Services
             )
         {
             _dbContext = dbContext;
-            _mapper = mapper;
+            _mapper = mapper;   
         }
 
         public async Task<TypedResult<AppUserDTO>> GetUserByEmail(string email) 
@@ -40,6 +40,24 @@ namespace DebateAble.Api.Services
             if(result == null)
             {
                 return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {email} not found");
+            }
+
+            return new TypedResult<AppUserDTO>(_mapper.Map<AppUserDTO>(result));
+        }
+
+        public async Task<TypedResult<AppUserDTO>> GetUserById(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(id)} required");
+            }
+
+            var result = await _dbContext.AppUsers
+                .FirstOrDefaultAsync(au => au.Id == id);
+
+            if (result == null)
+            {
+                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {id} not found");
             }
 
             return new TypedResult<AppUserDTO>(_mapper.Map<AppUserDTO>(result));

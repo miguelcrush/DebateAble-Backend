@@ -60,6 +60,7 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IDebateService, DebateService>();
 builder.Services.AddScoped<ISluggerService, SluggerService>();
+builder.Services.AddScoped<IParticipantTypeService, ParticipantTypeService>();
 
 /* END CUSTOM SERVICES */
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DebateAble.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,13 +7,22 @@ namespace DebateAble.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AppUsersController : ControllerBase
+	public class AppUsersController : BaseDebateableController
 	{
+		private readonly ICurrentUserService _currentUserService;
 
-		[HttpGet("whoami")]
-		public async Task<IActionResult> WhoAmI()
+		public AppUsersController(
+			ICurrentUserService currentUserService
+            )
+        {
+			_currentUserService = currentUserService;
+        }
+
+		[HttpGet("me")]
+		public async Task<IActionResult> GetMe()
 		{
-			return Ok("helllllo");
+			var result = await _currentUserService.GetCurrentUser();
+			return base.HandleTypedResult(result);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace DebateAble.Common
 {
-	public enum ParticipantType
+	public enum ParticipantTypeEnum
 	{
 		Unknown = 0,
 		Debater = 1,

@@ -14,4 +14,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CreatedByAppUserId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="b74319bd-bbe4-4c43-a655-c502e7a5d849" ChangeDateTime="08/17/2022 13:47:06">
+    <Property Name="ElementName" Value="[dbo].[ParticipantType].[CanComment]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParticipantType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CanPost" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9f482501-0ee6-4ee2-ac83-a779270abc76" ChangeDateTime="08/17/2022 13:48:47">
+    <Property Name="ElementName" Value="[dbo].[ParticipantType].[CanDebate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParticipantType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CanPost" />
+  </Operation>
 </Operations>

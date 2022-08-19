@@ -10,7 +10,7 @@ namespace DebateAble.DataTransfer
     {
         public string Title { get; set; } = default!;
         public string? Description { get; set; }
-        public PostResponseRequestDTO? ResponseRequest { get; set; }
+        public List<PostDebateParticipantDTO>? Participants { get; set; }
     }
 
     public class GetDebateDTO

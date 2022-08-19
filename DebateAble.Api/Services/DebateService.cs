@@ -115,13 +115,6 @@ namespace DebateAble.Api.Services
             _dbContext.Debates.Add(debate);
             await _dbContext.SaveChangesAsync();
 
-            if(includes.HasFlag(DebateIncludes.ResponseRequests))
-            {
-                var responseRequest = _mapper.Map<ResponseRequest>(dto.ResponseRequest);
-                _dbContext.ResponseRequests.Add(responseRequest);
-                await _dbContext.SaveChangesAsync();
-            }
-
             return new TypedResult<GetDebateDTO>(_mapper.Map<GetDebateDTO>(debate));
         }
     }
