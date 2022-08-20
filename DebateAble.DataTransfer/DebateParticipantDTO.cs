@@ -18,6 +18,8 @@ namespace DebateAble.DataTransfer
     {
         public Guid DebateId { get; set; }
         public Guid AppUserId { get; set; }
+        public string? AppUserEmail { get; set; }
+
         public ParticipantTypeEnum ParticipantTypeEnum { get; set; }
     }
 }

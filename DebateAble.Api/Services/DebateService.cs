@@ -115,6 +115,12 @@ namespace DebateAble.Api.Services
             _dbContext.Debates.Add(debate);
             await _dbContext.SaveChangesAsync();
 
+            if (includes.HasFlag(DebateIncludes.Participants))
+            {
+                var participantsDtos = dto.Participants ?? Enumerable.Empty<PostDebateParticipantDTO>();
+
+            }
+
             return new TypedResult<GetDebateDTO>(_mapper.Map<GetDebateDTO>(debate));
         }
     }
