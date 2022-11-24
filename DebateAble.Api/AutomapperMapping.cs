@@ -14,6 +14,7 @@ namespace DebateAble.Api
                 .ReverseMap();
             CreateMap<Debate, PostDebateDTO>().ReverseMap();
             CreateMap<ParticipantType, ParticipantTypeDTO>().ReverseMap();
+            CreateMap<Invitation, InvitationDTO>().ReverseMap();
         }
     }
 }

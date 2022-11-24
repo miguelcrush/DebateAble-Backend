@@ -70,11 +70,6 @@ namespace DebateAble.Api.Services
                 return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(user)} required");
             }
 
-            if (string.IsNullOrEmpty(user.Email))
-            {
-                throw new ArgumentNullException($"{nameof(user.Email)} required");
-            }
-
             var dbUser = await _dbContext.AppUsers
                 .FirstOrDefaultAsync(au => au.Email == user.Email);
 

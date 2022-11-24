@@ -19,18 +19,26 @@ namespace DebateAble.Api.Services
         private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUserService;
         private readonly ISluggerService _sluggerService;
+        private readonly IAppUserService _appUserService;
+        private readonly ILogger<IDebateService> _logger;
+        private readonly IInvitationService _invitationService;
 
         public DebateService(
             DebateAbleDbContext dbContext,
             IMapper mapper,
             ICurrentUserService currentUserService,
-            ISluggerService sluggerService
+            ISluggerService sluggerService,
+            IAppUserService appUserService,
+            ILogger<IDebateService> logger,
+            IInvitationService invitationService
             )
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _currentUserService = currentUserService;
             _sluggerService = sluggerService;
+            _appUserService = appUserService;
+            _invitationService= invitationService;
         }
 
         public async Task<TypedResult<List<GetDebateDTO>>> GetList(DebateIncludes includes = DebateIncludes.None)
@@ -117,7 +125,29 @@ namespace DebateAble.Api.Services
 
             if (includes.HasFlag(DebateIncludes.Participants))
             {
-                var participantsDtos = dto.Participants ?? Enumerable.Empty<PostDebateParticipantDTO>();
+                var participantsDtos = (dto.Participants ?? Enumerable.Empty<PostDebateParticipantDTO>())
+                    .Where(p => !string.IsNullOrEmpty(p.AppUserEmail))
+                    .GroupBy(p => p.AppUserEmail.ToLower())
+                    .Select(g => g.First());
+                foreach(var participantDto in participantsDtos)
+                {
+                    //get and/or invite the user
+                    var getInvitation = await _invitationService.InviteUser(participantDto.AppUserEmail);
+                    if (!getInvitation.WasSuccessful)
+                    {
+                        _logger.LogError(getInvitation.Exception, getInvitation.Message);
+                        continue;
+                    }
+
+                    _dbContext.DebateParticipants.Add(new DebateParticipant()
+                    {
+                        DebateId = debate.Id,
+                        AppUserId = getInvitation.Payload.InviteeAppUserId,
+                        ParticipantTypeId = (int)participantDto.ParticipantTypeEnum
+                    });
+                }
+
+                await _dbContext.SaveChangesAsync();
 
             }
 

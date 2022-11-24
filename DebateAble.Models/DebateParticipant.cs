@@ -11,6 +11,8 @@ namespace DebateAble.Models
 	{
 		public Guid AppUserId { get; set; }
 		public Guid DebateId { get; set; }
+
+		public int ParticipantTypeId { get; set; }
 		public ParticipantType ParticipantType { get; set; }
 
 		public virtual AppUser AppUser { get; set; }

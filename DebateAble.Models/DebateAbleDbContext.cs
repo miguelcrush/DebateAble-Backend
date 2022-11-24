@@ -20,10 +20,55 @@ namespace DebateAble.Models
 		public virtual DbSet<DebateComment> DebateComments { get; set; }
 		public virtual DbSet<DebateParticipant> DebateParticipants { get; set; }
 		public virtual DbSet<DebatePost> DebatePosts { get; set; }
+		public virtual DbSet<Invitation> Invitations { get; set; }	
 		public virtual DbSet<ParticipantType> ParticipantTypes { get; set; }
 		public virtual DbSet<ResponseRequest> ResponseRequests { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public override int SaveChanges()
+        {
+			TrackChanges();
+			return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+			TrackChanges();
+			return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+			TrackChanges();
+			return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+			TrackChanges();
+
+			return base.SaveChangesAsync(cancellationToken);
+        }
+
+		private void TrackChanges()
+        {
+			var entries = ChangeTracker
+				.Entries()
+				.Where(e => e.Entity is BaseTrackableModel && (
+						e.State == EntityState.Added
+						|| e.State == EntityState.Modified));
+
+			foreach (var entityEntry in entries)
+			{
+				((BaseTrackableModel)entityEntry.Entity).ModifiedOnUtc = DateTime.Now;
+
+				if (entityEntry.State == EntityState.Added)
+				{
+					((BaseTrackableModel)entityEntry.Entity).CreatedOnUtc = DateTime.Now;
+				}
+			}
+		}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<AppUser>(e =>
 			{
@@ -101,6 +146,25 @@ namespace DebateAble.Models
 				e.HasOne(e => e.Debate)
 					.WithMany(d => d.Posts)
 					.HasForeignKey(e => e.DebateId);
+			});
+
+			modelBuilder.Entity<Invitation>(e =>
+			{
+				e.ToTable("Invitation");
+				e.HasKey(e => e.Id);
+				e.Property(e => e.Id)
+					.HasColumnType("uniqueidentifier")
+					.HasDefaultValueSql("newsequentialid()");
+
+				e.HasOne(e => e.Inviter)
+					.WithMany(au => au.SentInvitations)
+					.HasForeignKey(e => e.InviterAppUserId)
+					.HasConstraintName("FK_Invitation_InviterAppUserId");
+
+				e.HasOne(e => e.Invitee)
+					.WithMany(au => au.ReceivedInvitations)
+					.HasForeignKey(e => e.InviteeAppUserId)
+					.HasConstraintName("FK_Invitation_InviteeAppUserId");
 			});
 
 			modelBuilder.Entity<ParticipantType>(e =>

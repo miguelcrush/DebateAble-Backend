@@ -53,6 +53,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddLogging();
+
 /* CUSTOM SERVICES */
 
 builder.Services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
@@ -61,6 +63,8 @@ builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IDebateService, DebateService>();
 builder.Services.AddScoped<ISluggerService, SluggerService>();
 builder.Services.AddScoped<IParticipantTypeService, ParticipantTypeService>();
+builder.Services.AddScoped<IInvitationService, InvitationService>();
+builder.Services.AddScoped<ISimpleEncryptionService, SimpleEncryptionService>();
 
 /* END CUSTOM SERVICES */
 
