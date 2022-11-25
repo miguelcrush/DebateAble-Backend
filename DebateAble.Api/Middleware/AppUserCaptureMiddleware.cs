@@ -44,7 +44,7 @@ namespace DebateAble.Api.Middleware
             var firstNameValue = context.User.FindFirstValue(ClaimTypes.GivenName);
             var lastNameValue = context.User.FindFirstValue(ClaimTypes.Surname);
 
-            var createUserResult = await appUserService.AddOrUpdateUser(new DataTransfer.AppUserDTO()
+            var createUserResult = await appUserService.AddOrUpdateUser(new DataTransfer.PostAppUserDTO()
             {
                 Email = emailClaim.Value,
                 FirstName = firstNameValue,

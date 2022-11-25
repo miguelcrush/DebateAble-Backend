@@ -8,13 +8,19 @@ namespace DebateAble.Api
     {
         public AutomapperMapping()
         {
-            CreateMap<AppUserDTO, AppUser>().ReverseMap();
+            CreateMap<GetAppUserDTO, AppUser>().ReverseMap();
+            CreateMap<PostAppUserDTO, AppUser>().ReverseMap();
+
             CreateMap<Debate, GetDebateDTO>()
                 .ForMember(dest => dest.StartedByEmailAddress, opt => opt.MapFrom(src => src.CreatedBy.Email))
                 .ReverseMap();
             CreateMap<Debate, PostDebateDTO>().ReverseMap();
+
             CreateMap<ParticipantType, ParticipantTypeDTO>().ReverseMap();
-            CreateMap<Invitation, InvitationDTO>().ReverseMap();
+            CreateMap<GetDebateParticipantDTO, DebateParticipant>().ReverseMap();
+            CreateMap<PostDebateParticipantDTO, DebateParticipant>().ReverseMap();
+
+            CreateMap<Invitation, GetInvitationDTO>().ReverseMap();
         }
     }
 }

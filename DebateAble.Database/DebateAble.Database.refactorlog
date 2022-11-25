@@ -28,4 +28,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CanPost" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="f51d795b-6000-4a5e-a0d6-6192cc1ea489" ChangeDateTime="11/25/2022 11:14:30">
+    <Property Name="ElementName" Value="[dbo].[AppUser].[InvitationToken]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AppUser]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Invited" />
+  </Operation>
 </Operations>

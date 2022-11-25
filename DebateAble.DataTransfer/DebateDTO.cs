@@ -26,5 +26,6 @@ namespace DebateAble.DataTransfer
         public string StartedByLastName { get; set; }
 
         public List<GetResponseRequestDTO> ResponseRequests { get; set; }
+        public List<GetDebateParticipantDTO> Participants { get; set; }
     }
 }

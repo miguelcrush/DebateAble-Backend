@@ -8,9 +8,9 @@ namespace DebateAble.Api.Services
 {
 	public interface IAppUserService
 	{
-		Task<TypedResult<AppUserDTO>> GetUserByEmail(string email);
-        Task<TypedResult<AppUserDTO>> AddOrUpdateUser(AppUserDTO user);
-        Task<TypedResult<AppUserDTO>> GetUserById(Guid id);
+		Task<TypedResult<GetAppUserDTO>> GetUserByEmail(string email);
+        Task<TypedResult<GetAppUserDTO>> AddOrUpdateUser(PostAppUserDTO user);
+        Task<TypedResult<GetAppUserDTO>> GetUserById(Guid id);
     }
 
     public class AppUserService : IAppUserService
@@ -27,11 +27,11 @@ namespace DebateAble.Api.Services
             _mapper = mapper;   
         }
 
-        public async Task<TypedResult<AppUserDTO>> GetUserByEmail(string email) 
+        public async Task<TypedResult<GetAppUserDTO>> GetUserByEmail(string email) 
         {
             if (string.IsNullOrEmpty(email))
             {
-                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(email)} required");
+                return new TypedResult<GetAppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(email)} required");
             }
 
             var result = await _dbContext.AppUsers
@@ -39,17 +39,17 @@ namespace DebateAble.Api.Services
 
             if(result == null)
             {
-                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {email} not found");
+                return new TypedResult<GetAppUserDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {email} not found");
             }
 
-            return new TypedResult<AppUserDTO>(_mapper.Map<AppUserDTO>(result));
+            return new TypedResult<GetAppUserDTO>(_mapper.Map<GetAppUserDTO>(result));
         }
 
-        public async Task<TypedResult<AppUserDTO>> GetUserById(Guid id)
+        public async Task<TypedResult<GetAppUserDTO>> GetUserById(Guid id)
         {
             if (id == Guid.Empty)
             {
-                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(id)} required");
+                return new TypedResult<GetAppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(id)} required");
             }
 
             var result = await _dbContext.AppUsers
@@ -57,17 +57,17 @@ namespace DebateAble.Api.Services
 
             if (result == null)
             {
-                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {id} not found");
+                return new TypedResult<GetAppUserDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {id} not found");
             }
 
-            return new TypedResult<AppUserDTO>(_mapper.Map<AppUserDTO>(result));
+            return new TypedResult<GetAppUserDTO>(_mapper.Map<GetAppUserDTO>(result));
         }
 
-        public async Task<TypedResult<AppUserDTO>> AddOrUpdateUser(AppUserDTO user)
+        public async Task<TypedResult<GetAppUserDTO>> AddOrUpdateUser(PostAppUserDTO user)
         {
             if(user == null)
             {
-                return new TypedResult<AppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(user)} required");
+                return new TypedResult<GetAppUserDTO>(TypedResultSummaryEnum.InvalidRequest, $"{nameof(user)} required");
             }
 
             var dbUser = await _dbContext.AppUsers
@@ -75,20 +75,18 @@ namespace DebateAble.Api.Services
 
             if(dbUser == null)
             {
-                dbUser = new AppUser()
-                {
-                    Email = user.Email
-                };
-
+                dbUser = _mapper.Map<AppUser>(user);
                 _dbContext.AppUsers.Add(dbUser);
             }
 
+            dbUser.Email = user.Email;
             dbUser.FirstName = user.FirstName;
             dbUser.LastName = user.LastName;
+            dbUser.Invited = user.Invited;
 
             await _dbContext.SaveChangesAsync();
 
-            return new TypedResult<AppUserDTO>(_mapper.Map<AppUserDTO>(dbUser));
+            return new TypedResult<GetAppUserDTO>(_mapper.Map<GetAppUserDTO>(dbUser));
         }
     }
 }

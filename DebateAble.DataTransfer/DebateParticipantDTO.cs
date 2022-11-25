@@ -14,6 +14,8 @@ namespace DebateAble.DataTransfer
         public Guid AppUserId { get; set; }
         public int ParticipantTypeId { get; set; }
         public ParticipantTypeDTO ParticpantType { get; set; }
+        public GetAppUserDTO AppUser { get; set; }
+
     }
 
     public class PostDebateParticipantDTO

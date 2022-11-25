@@ -79,7 +79,10 @@ namespace DebateAble.Api.Services
             }
             if (includes.HasFlag(DebateIncludes.Participants))
             {
-                query = query.Include(d => d.Participants);
+                query = query.Include(d => d.Participants)
+                    .ThenInclude(p => p.ParticipantType);
+                query = query.Include(d => d.Participants)
+                    .ThenInclude(p => p.AppUser);
             }
             if (includes.HasFlag(DebateIncludes.Posts))
             {
@@ -144,6 +147,18 @@ namespace DebateAble.Api.Services
                         DebateId = debate.Id,
                         AppUserId = getInvitation.Payload.InviteeAppUserId,
                         ParticipantTypeId = (int)participantDto.ParticipantTypeEnum
+                    });
+                }
+
+                //if not specified, include the current user
+                var currentUserEmail = await _currentUserService.GetCurrentUserEmail();
+                if(!participantsDtos.Any(p=> p.AppUserEmail == currentUserEmail))
+                {
+                    _dbContext.DebateParticipants.Add(new DebateParticipant()
+                    {
+                        DebateId = debate.Id,
+                        AppUserId = (await _currentUserService.GetCurrentUserId()),
+                        ParticipantTypeId = (int)ParticipantTypeEnum.Debater
                     });
                 }
 

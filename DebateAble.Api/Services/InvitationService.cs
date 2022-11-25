@@ -14,7 +14,7 @@ namespace DebateAble.Api.Services
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        Task<TypedResult<InvitationDTO>> InviteUser(string email);
+        Task<TypedResult<GetInvitationDTO>> InviteUser(string email);
 
         /// <summary>
         /// Invites an email as the current user
@@ -22,7 +22,7 @@ namespace DebateAble.Api.Services
         /// <param name="email"></param>
         /// <param name="force">Forces the invitation, even if the user already exists</param>
         /// <returns></returns>
-        Task<TypedResult<InvitationDTO>> InviteUser(string email, bool force);
+        Task<TypedResult<GetInvitationDTO>> InviteUser(string email, bool force);
 
         /// <summary>
         /// Invites an email as a specified user
@@ -30,7 +30,7 @@ namespace DebateAble.Api.Services
         /// <param name="email"></param>
         /// <param name="appUserId"></param>
         /// <returns></returns>
-        Task<TypedResult<InvitationDTO>> InviteUser(string email, Guid appUserId);
+        Task<TypedResult<GetInvitationDTO>> InviteUser(string email, Guid appUserId);
 
         /// <summary>
         /// Invites an email as a specified user
@@ -39,7 +39,7 @@ namespace DebateAble.Api.Services
         /// <param name="appUserId"></param>
         /// <param name="force">Forces the invitation, even if the user already exists</param>
         /// <returns></returns>
-        Task<TypedResult<InvitationDTO>> InviteUser(string email, Guid appUserId, bool force);
+        Task<TypedResult<GetInvitationDTO>> InviteUser(string email, Guid appUserId, bool force);
 
         /// <summary>
         /// Sends invitations to recipients
@@ -51,7 +51,7 @@ namespace DebateAble.Api.Services
         /// Gets all invitations
         /// </summary>
         /// <returns></returns>
-        Task<TypedResult<List<InvitationDTO>>> GetInvitations();
+        Task<TypedResult<List<GetInvitationDTO>>> GetInvitations();
 
     }
     public class InvitationService : IInvitationService
@@ -77,54 +77,57 @@ namespace DebateAble.Api.Services
             _encryptionService = encryptionService; 
         }
 
-        public async Task<TypedResult<InvitationDTO>> InviteUser(string email)
+        public async Task<TypedResult<GetInvitationDTO>> InviteUser(string email)
         {
             return await this.InviteUser(email, false);
         }
 
-        public async Task<TypedResult<InvitationDTO>> InviteUser(string email, bool force)
+        public async Task<TypedResult<GetInvitationDTO>> InviteUser(string email, bool force)
         {
             var currentUserId = await _currentUser.GetCurrentUserId();
             return await InviteUser(email, currentUserId);
         }
 
-        public async Task<TypedResult<InvitationDTO>> InviteUser(string email, Guid appUserId)
+        public async Task<TypedResult<GetInvitationDTO>> InviteUser(string email, Guid appUserId)
         {
             return await InviteUser(email, appUserId, false);
         }
 
-        public async Task<TypedResult<InvitationDTO>> InviteUser(string email, Guid appUserId, bool force)
+        public async Task<TypedResult<GetInvitationDTO>> InviteUser(string email, Guid appUserId, bool force)
         {
             //remember GDPR - don't want to store email addresses until the invitee registers
 
             var getUser = await _appUserService.GetUserById(appUserId);
             if (!getUser.WasSuccessful || getUser.Payload == null)
             {
-                return new TypedResult<InvitationDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {appUserId} was not found.");
+                return new TypedResult<GetInvitationDTO>(TypedResultSummaryEnum.ItemNotFound, $"User {appUserId} was not found.");
             }
 
             //does the invitee already exist?
             var getInvitee = await _appUserService.GetUserByEmail(email);
             if (!getInvitee.WasSuccessful && getInvitee.Summary != TypedResultSummaryEnum.ItemNotFound)
             {
-                return getInvitee.AsResult<AppUserDTO, InvitationDTO>();
+                return getInvitee.AsResult<GetAppUserDTO, GetInvitationDTO>();
             }
 
             //if they already exist and we're not forcing, return
             if(getInvitee.Payload != null && !force)
             {
-                return new TypedResult<InvitationDTO>(new InvitationDTO()
+                return new TypedResult<GetInvitationDTO>(new GetInvitationDTO()
                 {
                     InviteeAppUserId = getInvitee.Payload.Id
                 });
             }
 
             //otherwise, create an appuser record with a token
-            var createAppUserRecord = await _appUserService.AddOrUpdateUser(new AppUserDTO());
+            var createAppUserRecord = await _appUserService.AddOrUpdateUser(new PostAppUserDTO()
+            {
+                Invited = true
+            }) ;
 
             if (!createAppUserRecord.WasSuccessful)
             {
-                return createAppUserRecord.AsResult<AppUserDTO, InvitationDTO>();
+                return createAppUserRecord.AsResult<GetAppUserDTO, GetInvitationDTO>();
             }
 
             var token = await this.CreateInvitationToken(email);
@@ -140,18 +143,18 @@ namespace DebateAble.Api.Services
             {
                 _dbContext.Invitations.Add(invitation);
                 await _dbContext.SaveChangesAsync();
-                return new TypedResult<InvitationDTO>(_mapper.Map<InvitationDTO>(invitation));
+                return new TypedResult<GetInvitationDTO>(_mapper.Map<GetInvitationDTO>(invitation));
             }
             catch (Exception ex)
             {
-                return new TypedResult<InvitationDTO>($"Problem creating invitation", ex);
+                return new TypedResult<GetInvitationDTO>($"Problem creating invitation", ex);
             }
         }
 
-        public async Task<TypedResult<List<InvitationDTO>>> GetInvitations()
+        public async Task<TypedResult<List<GetInvitationDTO>>> GetInvitations()
         {
             var queryResult = await _dbContext.Invitations.ToListAsync();
-            return new TypedResult<List<InvitationDTO>>(queryResult.Select(i => _mapper.Map<InvitationDTO>(i)).ToList());
+            return new TypedResult<List<GetInvitationDTO>>(queryResult.Select(i => _mapper.Map<GetInvitationDTO>(i)).ToList());
         }
 
         public async Task<JobResult> SendInvitations()

@@ -7,7 +7,9 @@ namespace DebateAble.Api.Services
     public interface ICurrentUserService
     {
         Task<Guid> GetCurrentUserId();
-        Task<TypedResult<AppUserDTO>> GetCurrentUser();
+        Task<TypedResult<GetAppUserDTO>> GetCurrentUser();
+
+        Task<string> GetCurrentUserEmail();
     }
     public class CurrentUserService : ICurrentUserService
     {
@@ -55,10 +57,16 @@ namespace DebateAble.Api.Services
             return getDbUser.Payload.Id;
         }
 
-        public async Task<TypedResult<AppUserDTO>> GetCurrentUser()
+        public async Task<TypedResult<GetAppUserDTO>> GetCurrentUser()
         {
             var currentUserId = await GetCurrentUserId();
             return await _appUserService.GetUserById(currentUserId);
+        }
+
+        public async Task<string> GetCurrentUserEmail()
+        {
+            var currentUser = await GetCurrentUser();
+            return currentUser.Payload.Email;
         }
     }
 }

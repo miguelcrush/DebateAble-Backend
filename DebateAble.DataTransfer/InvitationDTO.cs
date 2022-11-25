@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace DebateAble.DataTransfer
 {
-    public class InvitationDTO
+    public class GetInvitationDTO
     {
         public Guid InviterAppUserId { get; set; }
         public Guid InviteeAppUserId { get; set; }
         public DateTime? InvitationSentUtc { get; set; }
         public string InvitationToken { get; set; }
 
-        public AppUserDTO Inviter { get; set; }
-        public AppUserDTO Invitee { get; set; }
+        public GetAppUserDTO Inviter { get; set; }
+        public GetAppUserDTO Invitee { get; set; }
     }
 }

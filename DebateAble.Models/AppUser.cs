@@ -6,7 +6,7 @@
 		public string? FirstName { get; set; }
 		public string? LastName { get; set; }
 
-		public string? InvitationToken { get; set; }
+		public bool Invited { get; set; }
 
 		public virtual ICollection<Debate>? StartedDebates { get; set; }
 		public virtual ICollection<DebateComment> DebateComments { get; set; }
